@@ -44,11 +44,19 @@ static NSString *const InvalidParameters = @"Invalid parameter's type";
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    FlutterMethodChannel* channel = [FlutterMethodChannel
-                                     methodChannelWithName:CHANNEL_NAME
-                                     binaryMessenger:[registrar messenger]];
-    FlutterKeychainPlugin* instance = [[FlutterKeychainPlugin alloc] init];
-    [registrar addMethodCallDelegate:instance channel:channel];
+    @try {
+        FlutterMethodChannel* channel = [FlutterMethodChannel
+                                         methodChannelWithName:CHANNEL_NAME
+                                         binaryMessenger:[registrar messenger]];
+        FlutterKeychainPlugin* instance = [[FlutterKeychainPlugin alloc] init];
+        [registrar addMethodCallDelegate:instance channel:channel];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception.reason);
+    }
+    @catch (NSObject *object){
+        NSLog(@"%@", object);
+    }
 }
 
 
